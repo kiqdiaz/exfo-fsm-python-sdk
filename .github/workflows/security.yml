@@ -2,9 +2,9 @@ name: Security — SAST & Dependencias
 
 on:
   push:
-    branches: [main]
+    branches: [main, dev]
   pull_request:
-    branches: [main]
+    branches: [main, dev]
   schedule:
     # Ejecuta cada lunes a las 08:00 UTC para detectar nuevas CVEs
     - cron: "0 8 * * 1"
