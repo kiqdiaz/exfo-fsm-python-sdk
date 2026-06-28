@@ -71,11 +71,11 @@ def _save(data: dict) -> dict:
 
 def _post(payload: dict) -> tuple[int, dict | None]:
     try:
-        r = requests.post(
+        r = requests.post(  # nosemgrep: python.requests.security.disabled-cert-validation.disabled-cert-validation
             KEYCLOAK_TOKEN_URL,
             data=payload,
             headers=HEADERS,
-            verify=False,  # nosec B501  # nosemgrep: python.requests.security.disabled-cert-validation.disabled-cert-validation — cert self-signed del servidor FMS interno
+            verify=False,  # nosec B501 — cert self-signed del servidor FMS interno
             timeout=10,
         )
     except requests.exceptions.ConnectionError as e:
