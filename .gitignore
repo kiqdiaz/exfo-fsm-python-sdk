@@ -1,8 +1,19 @@
-# Credenciales
+# Credenciales y secretos
 .env
+.env.*
+!.env.example
+fms_token.json
+*_token.json
+*_credentials.json
+*.pem
+*.key
+*.p12
+*.pfx
 
 # Entorno virtual
 .venv/
+venv/
+env/
 
 # Claude Code
 .claude/
@@ -10,8 +21,9 @@
 # scripts
 scripts/
 
-# Salidas JSON / tokens cacheados
+# Salidas JSON / tokens cacheados (excepto config explícitos)
 *.json
+modules.json
 
 # Python
 __pycache__/
