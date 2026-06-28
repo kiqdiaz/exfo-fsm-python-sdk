@@ -23,7 +23,7 @@ scripts/
 
 # Salidas JSON / tokens cacheados (excepto config explícitos)
 *.json
-!modules.json
+modules.json
 
 # Python
 __pycache__/
