@@ -1,0 +1,99 @@
+name: Security — SAST & Dependencias
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Ejecuta cada lunes a las 08:00 UTC para detectar nuevas CVEs
+    - cron: "0 8 * * 1"
+
+jobs:
+  bandit:
+    name: Bandit — SAST
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install Bandit
+        run: pip install bandit[toml]
+
+      - name: Run Bandit
+        run: |
+          bandit -r src/ \
+            --severity-level medium \
+            --confidence-level medium \
+            --format json \
+            --output bandit-report.json \
+            || true
+          bandit -r src/ \
+            --severity-level medium \
+            --confidence-level medium
+
+      - name: Upload Bandit report
+        uses: actions/upload-artifact@v4
+        with:
+          name: bandit-report
+          path: bandit-report.json
+          retention-days: 30
+
+  pip-audit:
+    name: pip-audit — CVEs en dependencias
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install pip-audit
+        run: pip install pip-audit
+
+      - name: Audit dependencies
+        run: |
+          pip install -r requirements.txt
+          pip-audit --requirement requirements.txt \
+            --format json \
+            --output pip-audit-report.json \
+            || true
+          pip-audit --requirement requirements.txt
+
+      - name: Upload pip-audit report
+        uses: actions/upload-artifact@v4
+        with:
+          name: pip-audit-report
+          path: pip-audit-report.json
+          retention-days: 30
+
+  semgrep:
+    name: Semgrep — Patrones de seguridad
+    runs-on: ubuntu-latest
+    # Semgrep es gratuito para repos públicos y open-source
+    if: github.actor != 'dependabot[bot]'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Semgrep
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: >-
+            p/python
+            p/secrets
+            p/security-audit
+        env:
+          # Opcional: conectar con semgrep.dev para ver historial
+          # SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
+          SEMGREP_TIMEOUT: "300"

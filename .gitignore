@@ -1,0 +1,39 @@
+# Credenciales
+.env
+
+# Entorno virtual
+.venv/
+
+# Claude Code
+.claude/
+
+# scripts
+scripts/
+
+# Salidas JSON / tokens cacheados
+*.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Archivos resultados
+*.sor
+*.png
+
+# Datos extraídos del FMS (pueden ser grandes / son datos de cliente real)
+data/raw/
+data/processed/
+data/interim/
+
+# MLflow
+mlruns/
+mlartifacts/
+
+# Notebooks
+.ipynb_checkpoints/
+
+# Reportes generados (datos derivados de mediciones reales)
+reports/
