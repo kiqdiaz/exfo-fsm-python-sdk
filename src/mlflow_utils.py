@@ -16,13 +16,13 @@ import mlflow
 import pandas as pd
 from mlflow.tracking import MlflowClient
 
-_TRACKING_DIR = Path(__file__).resolve().parent.parent / "mlruns"
+_DB_PATH = Path(__file__).resolve().parent.parent / "mlflow.db"
 
 
 def set_tracking_uri() -> None:
-    """Apunta mlflow al backend de archivos local ./mlruns. Debe llamarse antes
+    """Apunta mlflow al backend SQLite local mlflow.db. Debe llamarse antes
     de cualquier operación de tracking o de carga de modelos del Registry."""
-    mlflow.set_tracking_uri(f"file:{_TRACKING_DIR}")
+    mlflow.set_tracking_uri(f"sqlite:///{_DB_PATH}")
 
 
 def get_or_create_experiment(name: str) -> str:
