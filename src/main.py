@@ -48,7 +48,7 @@ def _do_get(token: str, url: str, params: dict | None = None) -> requests.Respon
         "Accept":        "application/json",
     }
     try:
-        return requests.get(url, headers=headers, params=params, verify=False, timeout=30)
+        return requests.get(url, headers=headers, params=params, verify=False, timeout=30)  # nosec B501 — cert self-signed del servidor FMS interno
     except requests.exceptions.ConnectionError as e:
         print(f"[FAIL] Sin conexión al FMS: {e}")
         sys.exit(1)
@@ -353,7 +353,7 @@ def _data_get(token: str, url: str, params: dict | None = None) -> requests.Resp
         "Accept":        "application/json",
     }
     try:
-        return requests.get(url, headers=headers, params=params, verify=False, timeout=30)
+        return requests.get(url, headers=headers, params=params, verify=False, timeout=30)  # nosec B501 — cert self-signed del servidor FMS interno
     except requests.exceptions.ConnectionError as e:
         print(f"[FAIL] Sin conexión al servicio de mediciones: {e}")
         sys.exit(1)

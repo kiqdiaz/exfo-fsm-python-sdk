@@ -75,7 +75,7 @@ def _post(payload: dict) -> tuple[int, dict | None]:
             KEYCLOAK_TOKEN_URL,
             data=payload,
             headers=HEADERS,
-            verify=False,
+            verify=False,  # nosec B501 — cert self-signed del servidor FMS interno
             timeout=10,
         )
     except requests.exceptions.ConnectionError as e:
